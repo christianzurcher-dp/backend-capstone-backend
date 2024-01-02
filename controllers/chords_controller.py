@@ -6,10 +6,11 @@ from util.reflection import populate_object
 from lib.authenticate import authenticate_return_auth
 
 
-def chord_add(req):
+@authenticate_return_auth
+def chord_add(req, auth_info):
     post_data = req.form if req.form else req.json
 
-    new_chord = Chords.get_new_chord()
+    new_chord = Chords.get_new_chord(auth_info.user_id)
     populate_object(new_chord, post_data)
 
     db.session.add(new_chord)
